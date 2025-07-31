@@ -14,7 +14,8 @@ const db = new sqlite3.Database("db.sqlite", (err) => {
     console.log("Connected to the SQLite database.");
   }
 });
-app.get("/products", (req, res) => {
+
+app.get("/api/products", (req, res) => {
   db.all("SELECT * FROM products", [], (err, rows) => {
     if (err) {
       console.error("Error fetching products:", err.message);
@@ -25,10 +26,10 @@ app.get("/products", (req, res) => {
   });
 });
 
-app.get("/products/:id", (req, res) => {
-  const productId = req.params.id;
+app.get("/api/products/:id", (req, res) => {
+  const id = req.params.id;
   const query = "SELECT * FROM products WHERE id = ?";
-  db.get("SELECT * FROM products WHERE id = ?", [id], (err, row) => {
+  db.get(query, [id], (err, row) => {
     if (err) {
       console.error("Error fetching product:", err.message);
       res.status(500).json({ error: "internal server error" });
